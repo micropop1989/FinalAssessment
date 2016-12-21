@@ -10,13 +10,25 @@ import Foundation
 
 
 class User {
-    var UserID : String? = ""
+    var userID : String? = ""
     var name : String? = ""
-    var age : Int? = 0
-    var gender : String = ""
-    var email : String = ""
-    var password : String = ""
-    var description : String = ""
-    var profilepicture : String = ""
+    var age : String? = ""
+    var gender : String? = ""
+    var email : String? = ""
+    var password : String? = ""
+    var description : String? = ""
+    var profilepictureURL : String? = ""
+    
+    
+     init(dict: [String:AnyObject]){
+        
+         name = dict["name"] as? String
+        age = dict["age"] as? String
+        email = dict["email"] as? String
+        gender = dict["gender"] as? String
+        description = dict["desc"] as? String
+        
+        
+    }
     
 }

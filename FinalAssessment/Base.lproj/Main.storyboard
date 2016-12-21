@@ -11,7 +11,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="BYZ-38-t0r" customClass="LoginViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -62,13 +62,14 @@
                         <outlet property="loginButton" destination="sa2-ID-4Js" id="ERN-ru-9eg"/>
                         <outlet property="passwordLabel" destination="Oqb-e8-NYP" id="kiS-Go-Qcc"/>
                         <outlet property="signUpButton" destination="hDT-3F-VTt" id="pf9-o5-0Cg"/>
+                        <segue destination="X70-0t-r8b" kind="show" identifier="signUpSegue" id="u8f-dP-2jO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-12" y="101"/>
         </scene>
-        <!--My Profile View Controller-->
+        <!--Item-->
         <scene sceneID="7jw-Ra-unF">
             <objects>
                 <viewController id="1RZ-xV-VRZ" customClass="MyProfileViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
@@ -153,7 +154,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Edit"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aBb-Cl-zb1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="emptyPic" translatesAutoresizingMaskIntoConstraints="NO" id="aBb-Cl-zb1">
                                 <frame key="frameInset" minX="134" minY="28" width="120" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="bLX-HO-Xoz"/>
@@ -179,6 +180,7 @@
                             <constraint firstItem="WWH-Fc-fSX" firstAttribute="leading" secondItem="HEG-j8-2nN" secondAttribute="leadingMargin" constant="8" id="zP1-U5-b3i"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="B0D-Co-bq4"/>
                     <connections>
                         <outlet property="ageLabel" destination="0BF-gj-EQf" id="QfS-ev-bXX"/>
                         <outlet property="editButton" destination="cmh-0x-xer" id="E5s-66-m2f"/>
@@ -186,13 +188,14 @@
                         <outlet property="genderLabel" destination="MWd-wT-6dH" id="pox-Px-OTM"/>
                         <outlet property="nameLabel" destination="TQi-Zf-lXm" id="09p-IR-fpe"/>
                         <outlet property="profileImage" destination="aBb-Cl-zb1" id="aX6-D8-Hpb"/>
+                        <segue destination="X70-0t-r8b" kind="show" identifier="myProfileSegue" id="EAO-yY-hk7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4fr-Ms-8xE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="885.60000000000002" y="34.632683658170919"/>
+            <point key="canvasLocation" x="1487" y="822"/>
         </scene>
-        <!--Matched Profiles View Controller-->
+        <!--Item-->
         <scene sceneID="pIl-7b-IZh">
             <objects>
                 <viewController id="zlw-5j-6zj" customClass="MatchedProfilesViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
@@ -214,7 +217,7 @@
                                             <frame key="frameInset" width="343" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5PR-mV-MF9">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="emptyPic" translatesAutoresizingMaskIntoConstraints="NO" id="5PR-mV-MF9">
                                                     <frame key="frameInset" minX="16" minY="16" width="56" height="47"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="5PR-mV-MF9" secondAttribute="height" multiplier="1:1" id="QKb-aO-pXN"/>
@@ -251,15 +254,17 @@
                             <constraint firstItem="ePH-xX-cBQ" firstAttribute="top" secondItem="eYF-Ds-xJE" secondAttribute="bottom" id="itN-Eb-Gta"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="FBS-x9-Un8"/>
                     <connections>
                         <outlet property="tableView" destination="ePH-xX-cBQ" id="Jz9-d4-2AL"/>
+                        <segue destination="7Rl-AK-eUh" kind="show" id="TXc-RP-sgf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rJP-lf-E7J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1636" y="22"/>
+            <point key="canvasLocation" x="2399" y="842"/>
         </scene>
-        <!--Candidate Detail View Controller-->
+        <!--Item-->
         <scene sceneID="Nzu-ZA-OO6">
             <objects>
                 <viewController id="Rd7-Tp-INb" customClass="CandidateDetailViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
@@ -270,17 +275,65 @@
                     <view key="view" contentMode="scaleToFill" id="1xn-hb-IUK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="241" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6f2-RY-Wgj">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="241" id="MOK-i0-BuZ">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="241"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MOK-i0-BuZ" id="c5q-VK-ilp">
+                                            <frame key="frameInset" width="343" height="240"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="emptyPic" translatesAutoresizingMaskIntoConstraints="NO" id="3im-6r-wOW">
+                                                    <frame key="frameInset" minX="91" minY="8" width="160" height="99"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AXz-OK-psW">
+                                                    <frame key="frameInset" minX="189" minY="179" width="43" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Match"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHN-F6-Khu">
+                                                    <frame key="frameInset" minX="69" minY="179" width="63" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Unmatch"/>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBr-ol-5ER">
+                                                    <frame key="frameInset" minX="69" minY="140" width="196" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6f2-RY-Wgj" firstAttribute="top" secondItem="Adf-Yz-6JE" secondAttribute="bottom" id="bsu-Va-Eu1"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6f2-RY-Wgj" secondAttribute="trailing" id="ftE-Av-ULK"/>
+                            <constraint firstItem="Vfp-qU-8Qt" firstAttribute="top" secondItem="6f2-RY-Wgj" secondAttribute="bottom" id="qNb-vU-waL"/>
+                            <constraint firstItem="6f2-RY-Wgj" firstAttribute="leading" secondItem="1xn-hb-IUK" secondAttribute="leadingMargin" id="wb9-DY-h0k"/>
+                        </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="W7r-XD-uvb"/>
+                    <connections>
+                        <segue destination="7Rl-AK-eUh" kind="show" id="Ff6-t2-Dpc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NkO-hq-oHr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2614" y="100"/>
+            <point key="canvasLocation" x="3245.5999999999999" y="232.53373313343329"/>
         </scene>
         <!--Edit Profile View Controller-->
         <scene sceneID="KGP-8V-htX">
             <objects>
-                <viewController id="X70-0t-r8b" customClass="EditProfileViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditProfileViewController" id="X70-0t-r8b" customClass="EditProfileViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UaQ-qU-SMG"/>
                         <viewControllerLayoutGuide type="bottom" id="0zC-hB-XxO"/>
@@ -367,22 +420,22 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="BackButton" destination="Pvb-Vr-Er7" id="Ygf-bB-kpt"/>
-                        <outlet property="CreateAccountButton" destination="z9L-HP-txp" id="L7O-RW-cDM"/>
-                        <outlet property="UpdateAccountButton" destination="S3W-VO-yBE" id="i1s-eS-LfW"/>
                         <outlet property="ageText" destination="ryg-EH-nmW" id="gla-xm-AAz"/>
+                        <outlet property="backButton" destination="Pvb-Vr-Er7" id="deD-9k-0pX"/>
+                        <outlet property="createAccountButton" destination="z9L-HP-txp" id="CrA-QH-9Pv"/>
                         <outlet property="descriptionText" destination="aoW-rg-noz" id="Mhm-x6-X76"/>
                         <outlet property="emailText" destination="rnj-FH-agl" id="V88-XA-9Ws"/>
                         <outlet property="genderPickerView" destination="xOk-kj-osv" id="lN8-dF-CNT"/>
                         <outlet property="nameText" destination="ZNu-3W-0v1" id="92Q-qO-qXM"/>
                         <outlet property="passwordText" destination="yEi-BJ-H5Q" id="eJf-uh-qrK"/>
+                        <outlet property="updateAccountButton" destination="S3W-VO-yBE" id="Gvi-WU-jd4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xxP-NZ-Y1P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-12" y="789.35532233883066"/>
         </scene>
-        <!--Candidate Detail View Controller-->
+        <!--Item-->
         <scene sceneID="iSE-en-xIA">
             <objects>
                 <viewController id="7Rl-AK-eUh" customClass="CandidateDetailViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
@@ -394,7 +447,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EWu-1Z-qKS">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="emptyPic" translatesAutoresizingMaskIntoConstraints="NO" id="EWu-1Z-qKS">
                                 <frame key="frameInset" minX="112" minY="20" width="120" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -495,6 +548,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="On9-JX-azE"/>
                     <connections>
                         <outlet property="ageLabel" destination="46J-9e-VYO" id="86X-gx-rsH"/>
                         <outlet property="backButton" destination="Vab-rG-L7X" id="axa-7P-6pm"/>
@@ -507,7 +561,33 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z33-Ol-wV4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1666" y="750"/>
+            <point key="canvasLocation" x="3409" y="866"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Wmv-GR-yBh">
+            <objects>
+                <tabBarController storyboardIdentifier="matchTabBar" automaticallyAdjustsScrollViewInsets="NO" id="s7c-SL-r88" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="W3n-X3-Nmc">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="1RZ-xV-VRZ" kind="relationship" relationship="viewControllers" id="pT7-aa-sxQ"/>
+                        <segue destination="zlw-5j-6zj" kind="relationship" relationship="viewControllers" id="7Kb-LS-P1W"/>
+                        <segue destination="Rd7-Tp-INb" kind="relationship" relationship="viewControllers" id="Ccw-VC-kHt"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qgO-FX-pPb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="885.60000000000002" y="34.632683658170919"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="emptyPic" width="225" height="225"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Ff6-t2-Dpc"/>
+        <segue reference="u8f-dP-2jO"/>
+    </inferredMetricsTieBreakers>
 </document>

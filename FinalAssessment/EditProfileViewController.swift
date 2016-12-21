@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 
 class EditProfileViewController: UIViewController {
 
@@ -17,18 +19,68 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var ageText: UITextField!
     @IBOutlet weak var genderPickerView: UIPickerView!
     
-    @IBOutlet weak var CreateAccountButton: UIButton!
+   
     
-    @IBOutlet weak var UpdateAccountButton: UIButton!
+    @IBOutlet weak var createAccountButton: UIButton! {
+        didSet {
+            createAccountButton.addTarget(self, action: #selector(oncreateAccountButtonPressed), for: .touchUpInside)
+        }
+    }
     
-    @IBOutlet weak var BackButton: UIButton!
+     func oncreateAccountButtonPressed(button: UIButton) {
+    }
+    
+    @IBOutlet weak var updateAccountButton: UIButton! {
+        didSet {
+            updateAccountButton.addTarget(self, action: #selector(updateAccountButtonPressed), for: .touchUpInside)
+        }
+    }
+    
+    func updateAccountButtonPressed(button: UIButton) {
+        
+    }
+    
+   
+    
+    @IBOutlet weak var backButton: UIButton!
+    
+    var fromVC : String? = ""
+   
+   
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        hideButton()
+        intinal()
+        print(fromVC)
+        
 
        
     }
-
+  
+    func hideButton() {
+        if fromVC == "LoginController" {
+            createAccountButton.isHidden = false
+            updateAccountButton.isHidden = true
+            
+        } else if fromVC == "My Profile" {
+            createAccountButton.isHidden = true
+            updateAccountButton.isHidden = false
+        }
+    }
+    
+    
+    func intinal() {
+        descriptionText.placeholder  = "descriptionText"
+        passwordText.placeholder = "passwordText"
+        emailText.placeholder = "email"
+        nameText.placeholder = "name"
+        ageText.placeholder = "age"
+        
+        
+        
+        
+    }
    
     
 

@@ -45,3 +45,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate {
+   
+        func observeNotification ()
+        {
+            NotificationCenter.default.addObserver(self, selector:#selector(handleUserLoginNotification(_:)), name: Notification.Name(rawValue: "AuthSuccessNotification"), object: nil)
+            
+            NotificationCenter.default.addObserver(self, selector:#selector(handleUserLoginNotification(_:)), name: Notification.Name(rawValue: "ExistLoggedInUserNotification"), object: nil)
+            
+            
+        }
+
+    
+    
+    
+    func handleUserLoginNotification (_ notification: Notification)
+    {
+        //this will only be called if user successfully login
+        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        
+        let tabBarController = storyBoard.instantiateViewController(withIdentifier: "matchTabBar")
+        
+        window?.rootViewController = tabBarController
+    }
+    
+    
+}
+

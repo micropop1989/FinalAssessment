@@ -19,6 +19,8 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var profileImage: UIImageView!
     var frDBref : FIRDatabaseReference!
     
+    
+    
     @IBOutlet weak var editButton: UIButton! {
         didSet {
             editButton.addTarget(self, action: #selector(onEditButtonPressed), for: .touchUpInside)
@@ -26,8 +28,18 @@ class MyProfileViewController: UIViewController {
     }
     
     func onEditButtonPressed(button: UIButton) {
-        
+         self.performSegue(withIdentifier: "myProfileSegue", sender: self)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "myProfileSegue") {
+            let destination = segue.destination as! EditProfileViewController
+            destination.fromVC = "My Profile"
+            
+            
+        }
+    }
+
    
     
     override func viewDidLoad() {
@@ -48,23 +60,31 @@ class MyProfileViewController: UIViewController {
       
         frDBref.child("User").child(userid).observeSingleEvent(of: .value, with: { (userSnapshot) in
             
-            let newUser = User()
-            guard let UserDictionary = userSnapshot.value as? [String : AnyObject]
+            
+            guard let userDictionary = userSnapshot.value as? [String : AnyObject]
                 else
             {
                 return
             }
-            
-           newUser.name = UserDictionary["Name"] as? String
-           newUser.age = UserDictionary["age"] as? Int
-            newUser.gender  = (UserDictionary["gender"] as? String)!
-            newUser.email = (UserDictionary["email"] as? String)!
+            let newUser = User(dict: userDictionary)
+           newUser.name = userDictionary["name"] as? String
+           newUser.age = userDictionary["age"] as? String
+            newUser.gender  = (userDictionary["gender"] as? String)!
+            newUser.email = (userDictionary["email"] as? String)!
+            newUser.profilepictureURL = userDictionary["picture"] as? String
             
             
             self.nameLabel.text = newUser.name
-            self.ageLabel.text = "\(newUser.age)"
+            self.ageLabel.text = newUser.age
             self.genderLabel.text = newUser.gender
             self.emailLabel.text = newUser.email
+            if newUser.profilepictureURL == "" {
+                
+                let image = UIImage(named: "emptyPic.jpg")
+                self.profileImage = UIImageView(image: image)
+            } else {
+                self.profileImage.loadImageUsingCacheWithUrlString(newUser.profilepictureURL!)
+            }
             
         })
         

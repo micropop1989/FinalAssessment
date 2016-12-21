@@ -7,30 +7,99 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
+
 
 class MatchedProfilesViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    var users : [User] = []
+    
+    var frDBref : FIRDatabaseReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+        tableView.delegate = self
+        tableView.dataSource = self
+        frDBref = FIRDatabase.database().reference()
+        
+        fetchUser()
+        
+        tableView.tableFooterView = UIView()
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 99.0
+        
+        
+        let swipeleft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeleft))
+        self.view.addGestureRecognizer(swipeleft)
+        
+        
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+   }
+    
+    //todo
+    func handleSwipeleft(tapGesture: UITapGestureRecognizer) {
+        
     }
-    */
+    
+    
+    
+    
+    func fetchUser() {
+      
+        let matchUserID = "User1"
+       frDBref.child("Match").child(matchUserID).observeSingleEvent(of: .value, with: { (MatchuserSnapshot) in
+      
+        guard let matchUserDictionary = MatchuserSnapshot.value as? [String : AnyObject]
+                    else { return }
+        
+        for (userkey, value) in matchUserDictionary {
+          
+            self.frDBref.child("User").child(userkey).observeSingleEvent(of: .value, with: { (userSnapshot) in
+            
+                guard let userDictionary = userSnapshot.value as? [String : AnyObject]
+                              else { return }
+            let newUser = User(dict: userDictionary)
+            newUser.name = userDictionary["name"] as! String
+            self.users.append(newUser)
+            
+            
+            self.tableView.reloadData()
+            
+            
+            })
+        }
+        })
+    
+
+
+    }
+
+    
+}
+
+extension MatchedProfilesViewController: UITableViewDelegate {
+    
+}
+
+extension MatchedProfilesViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell : TableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell else {
+            return UITableViewCell()
+            
+        }
+        
+        let user : User
+        user = users[indexPath.row]
+        cell.NameLabel.text = user.name
+        
+        return cell
+    }
 
 }
