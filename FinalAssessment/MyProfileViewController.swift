@@ -10,6 +10,16 @@ import UIKit
 
 class MyProfileViewController: UIViewController {
 
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var genderLabel: UILabel!
+    @IBOutlet weak var ageLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var profileImage: UIImageView!
+   
+    
+    @IBOutlet weak var editButton: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
