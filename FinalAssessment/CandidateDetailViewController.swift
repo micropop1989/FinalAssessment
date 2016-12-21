@@ -10,6 +10,20 @@ import UIKit
 
 class CandidateDetailViewController: UIViewController {
 
+    @IBOutlet weak var profilePicture: UIImageView!
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var ageLabel: UILabel!
+    
+    @IBOutlet weak var genderLabel: UILabel!
+    
+    @IBOutlet weak var emailLabel: UILabel!
+    
+    
+    @IBOutlet weak var backButton: UIButton!
+   
+    @IBOutlet weak var unmatchButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 

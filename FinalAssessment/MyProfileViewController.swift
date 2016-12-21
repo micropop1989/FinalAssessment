@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class MyProfileViewController: UIViewController {
 
@@ -15,31 +17,60 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
+    var frDBref : FIRDatabaseReference!
+    
+    @IBOutlet weak var editButton: UIButton! {
+        didSet {
+            editButton.addTarget(self, action: #selector(onEditButtonPressed), for: .touchUpInside)
+        }
+    }
+    
+    func onEditButtonPressed(button: UIButton) {
+        
+    }
    
-    
-    @IBOutlet weak var editButton: UIButton!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        frDBref = FIRDatabase.database().reference()
+        
+        featchUser()
+        
     }
     
 
-    /*
-    // MARK: - Navigation
+    func featchUser() {
+       // guard let userid = station?.stationID
+         //   else{ return }
+   
+        let userid = "User1"
+      
+        frDBref.child("User").child(userid).observeSingleEvent(of: .value, with: { (userSnapshot) in
+            
+            let newUser = User()
+            guard let UserDictionary = userSnapshot.value as? [String : AnyObject]
+                else
+            {
+                return
+            }
+            
+           newUser.name = UserDictionary["Name"] as? String
+           newUser.age = UserDictionary["age"] as? Int
+            newUser.gender  = (UserDictionary["gender"] as? String)!
+            newUser.email = (UserDictionary["email"] as? String)!
+            
+            
+            self.nameLabel.text = newUser.name
+            self.ageLabel.text = "\(newUser.age)"
+            self.genderLabel.text = newUser.gender
+            self.emailLabel.text = newUser.email
+            
+        })
+        
+            
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
