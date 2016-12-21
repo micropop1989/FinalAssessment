@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-12" y="101"/>
+        </scene>
+        <!--My Profile View Controller-->
+        <scene sceneID="7jw-Ra-unF">
+            <objects>
+                <viewController id="1RZ-xV-VRZ" customClass="MyProfileViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dxg-Wq-c82"/>
+                        <viewControllerLayoutGuide type="bottom" id="Hj4-GW-SRj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HEG-j8-2nN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4fr-Ms-8xE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="886" y="35"/>
+        </scene>
+        <!--Matched Profiles View Controller-->
+        <scene sceneID="pIl-7b-IZh">
+            <objects>
+                <viewController id="zlw-5j-6zj" customClass="MatchedProfilesViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eYF-Ds-xJE"/>
+                        <viewControllerLayoutGuide type="bottom" id="Qgo-54-QHJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5mT-eT-gVq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rJP-lf-E7J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1570" y="125"/>
+        </scene>
+        <!--Candidate Detail View Controller-->
+        <scene sceneID="Nzu-ZA-OO6">
+            <objects>
+                <viewController id="Rd7-Tp-INb" customClass="CandidateDetailViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Adf-Yz-6JE"/>
+                        <viewControllerLayoutGuide type="bottom" id="Vfp-qU-8Qt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1xn-hb-IUK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NkO-hq-oHr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2415" y="128"/>
+        </scene>
+        <!--Edit Profile View Controller-->
+        <scene sceneID="KGP-8V-htX">
+            <objects>
+                <viewController id="X70-0t-r8b" customClass="EditProfileViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UaQ-qU-SMG"/>
+                        <viewControllerLayoutGuide type="bottom" id="0zC-hB-XxO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eG0-cR-b5K">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xxP-NZ-Y1P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-12" y="790"/>
+        </scene>
+        <!--Match Candidate View Controller-->
+        <scene sceneID="iSE-en-xIA">
+            <objects>
+                <viewController id="7Rl-AK-eUh" customClass="MatchCandidateViewController" customModule="FinalAssessment" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GH8-QH-d58"/>
+                        <viewControllerLayoutGuide type="bottom" id="z5V-NR-svD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Uyf-d5-lr3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z33-Ol-wV4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1783" y="813"/>
+        </scene>
+    </scenes>
+</document>
