@@ -20,6 +20,8 @@ class MatchedProfilesViewController: UIViewController {
     
     var matchUserID = User().currentUserUid()
     
+    var indexToSend = -1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -116,15 +118,42 @@ extension MatchedProfilesViewController: UITableViewDataSource {
         user = users[indexPath.row]
         cell.NameLabel.text = user.name
         
-        if user.profilepictureURL == "" {
+        if user.profilepictureURL != "" {
+            cell.profilePicture.loadImageUsingCacheWithUrlString(user.profilepictureURL!)
             
+        } else {
             let image = UIImage(named: "emptyPic")
             cell.profilePicture = UIImageView(image: image)
-        } else {
-            cell.profilePicture.loadImageUsingCacheWithUrlString(user.profilepictureURL!)
+        }
+        cell.delegate = self
+        return cell
+    }
+
+}
+
+extension MatchedProfilesViewController: MatchedProfilesTableViewCellDelegate {
+    func matchedProfileTableViewCellHandleUnMatch(cell: TableViewCell) {
+        guard let indexPath =  tableView.indexPath(for: cell)
+            else{
+                return
+        }
+        indexToSend = indexPath.row
+        unmatchProfile()
+    }
+    
+    func unmatchProfile() {
+        
+        let unmatchAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH!", preferredStyle: .alert)
+        let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
+        let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
+            
         }
         
-        return cell
+        unmatchAlret.addAction(noButton)
+        unmatchAlret.addAction(yesButton)
+        present(unmatchAlret, animated: true, completion: nil)
+        
+        
     }
 
 }

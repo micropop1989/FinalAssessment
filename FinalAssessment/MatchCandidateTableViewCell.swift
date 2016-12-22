@@ -15,14 +15,20 @@ class MatchCandidateTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
    
     @IBOutlet weak var ageLabel: UILabel!
+    
+     var delegate : MatchCandidateTableViewCellDelegate?
+   
+    
     @IBOutlet weak var matchButton: UIButton! {
         didSet {
           matchButton.addTarget(self, action: #selector(onMatchButtonPressed), for: .touchUpInside)
         }
     }
     
+   
+    
     func onMatchButtonPressed(button: UIButton) {
-        
+        delegate?.matchCandidateTableViewCellHandleMatch(cell: self)
     }
     
     
@@ -34,18 +40,40 @@ class MatchCandidateTableViewCell: UITableViewCell {
     }
     
     func onUnMatchButtonPressed(button: UIButton) {
+      
+        delegate?.matchCandidateTableviewCellHandleUnMatch(cell: self)
         
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.handleMatchGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.addGestureRecognizer(swipeRight)
+        
+        let swipeleft = UISwipeGestureRecognizer(target: self, action: #selector(self.handleUnMatchGesture))
+        swipeleft.direction = UISwipeGestureRecognizerDirection.left
+        self.addGestureRecognizer(swipeleft)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+        
+    }
+    
+    func handleMatchGesture(gesture: UIGestureRecognizer) {
+        delegate?.matchCandidateTableViewCellHandleMatch(cell: self)
+    }
+    
+    func handleUnMatchGesture(gesture: UIGestureRecognizer) {
+        delegate?.matchCandidateTableviewCellHandleUnMatch(cell: self)
     }
 
+}
+
+protocol MatchCandidateTableViewCellDelegate {
+    func matchCandidateTableViewCellHandleMatch(cell : MatchCandidateTableViewCell)
+    func matchCandidateTableviewCellHandleUnMatch(cell : MatchCandidateTableViewCell)
+    
 }

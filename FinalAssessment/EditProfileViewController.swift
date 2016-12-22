@@ -24,6 +24,7 @@ class EditProfileViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var genderLabel: UILabel!
     var gender = ["Male", "Female"]
    
@@ -34,8 +35,36 @@ class EditProfileViewController: UIViewController {
         }
     }
     
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        hideButton()
+        intinal()
+        print(fromVC)
+        
+        genderLabel.isUserInteractionEnabled = true
+        profilePicture.isUserInteractionEnabled = true
+        let genderLabeltap = UITapGestureRecognizer(target:self,action:#selector(self.tapToShowPickerView(sender:)))
+        let chooseImage = UITapGestureRecognizer(target:self, action:#selector(self.tapToOpenImagePicker(sender:)))
+        genderLabel.addGestureRecognizer(genderLabeltap)
+        
+        profilePicture.addGestureRecognizer(chooseImage)
+}
+
      func oncreateAccountButtonPressed(button: UIButton) {
     }
+    
+    @objc  private func tapToShowPickerView(sender: UITapGestureRecognizer) {
+        genderPickerView.isHidden = false
+    }
+    
+    @objc  private func tapToOpenImagePicker(sender: UITapGestureRecognizer) {
+        self.warningPopUp(withTitle: "tesstg", withMessage: "haha")
+    }
+    
+    
+    
     
     @IBOutlet weak var updateAccountButton: UIButton! {
         didSet {
@@ -54,17 +83,7 @@ class EditProfileViewController: UIViewController {
     var fromVC : String? = ""
    
    
-    override func viewDidLoad() {
-        
-        super.viewDidLoad()
-        hideButton()
-        intinal()
-        print(fromVC)
-        
-
-       
-    }
-  
+    
     func hideButton() {
         if fromVC == "LoginController" {
             createAccountButton.isHidden = false
@@ -95,13 +114,17 @@ extension EditProfileViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 2
+        return gender.count
     }
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return gender[row]
     }
 }
 
 extension EditProfileViewController: UIPickerViewDelegate {
-    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        genderLabel.text = gender[row]
+        pickerView.isHidden = true
+    }
 }

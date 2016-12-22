@@ -11,11 +11,13 @@ import Firebase
 import FirebaseDatabase
 
 class MatchCandidateViewController: UIViewController {
-    var users : [User] = []
+    var users = [User]()
     
     var frDBref : FIRDatabaseReference!
     
     var userID = User().currentUserUid()
+    
+    var indexToSend = -1
 
    
     @IBOutlet weak var matchCandidateTableView: UITableView! {
@@ -83,8 +85,8 @@ extension MatchCandidateViewController: UITableViewDataSource {
         }
         
         
-        
-        let user : User
+        cell.delegate = self
+        var user = User()
         user = users[indexPath.row]
         
         
@@ -92,14 +94,23 @@ extension MatchCandidateViewController: UITableViewDataSource {
             cell.nameLabel.text = user.name
             cell.ageLabel.text = user.age
             cell.genderLabel.text = user.gender
-            
-            if user.profilepictureURL == "" {
-                
+        
+          guard  let pictureURL = user.profilepictureURL else
+          {
+            let image = UIImage(named: "emptyPic")
+            cell.profileImage = UIImageView(image: image)
+            return cell }
+        
+        
+            if pictureURL != "" {
+                print(pictureURL)
+                cell.profileImage.loadImageUsingCacheWithUrlString(pictureURL)
+             
+            } else {
                 let image = UIImage(named: "emptyPic")
                 cell.profileImage = UIImageView(image: image)
-            } else {
-                cell.profileImage.loadImageUsingCacheWithUrlString(user.profilepictureURL!)
             }
+        
 
     return cell
             
@@ -111,4 +122,59 @@ extension MatchCandidateViewController: UITableViewDataSource {
 
 extension MatchCandidateViewController: UITableViewDelegate {
     
+}
+
+extension MatchCandidateViewController: MatchCandidateTableViewCellDelegate {
+    func matchCandidateTableViewCellHandleMatch(cell: MatchCandidateTableViewCell) {
+        guard let indexPath = matchCandidateTableView.indexPath(for: cell)
+            else{
+                return
+        }
+        indexToSend = indexPath.row
+        
+        matchProfile()
+    }
+    
+    func matchCandidateTableviewCellHandleUnMatch(cell: MatchCandidateTableViewCell) {
+      
+guard let indexPath = matchCandidateTableView.indexPath(for: cell)
+            else{
+                return
+        }
+        indexToSend = indexPath.row
+        unmatchProfile()
+    }
+
+    func matchProfile() {
+        var user  =  User()
+        user = users[indexToSend]
+        let matchAlret = UIAlertController(title: "match Cofirmation", message: "Are you sure you want MATCH \(user.name!)! \(user.userID!)", preferredStyle: .alert)
+        let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
+        let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
+            
+        }
+        
+        matchAlret.addAction(noButton)
+        matchAlret.addAction(yesButton)
+        present(matchAlret, animated: true, completion: nil)
+    
+    }
+    
+    func unmatchProfile() {
+        var user  =  User()
+        user = users[indexToSend]
+
+        let unmatchAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH \(user.name!)! \(user.userID!)", preferredStyle: .alert)
+        let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
+        let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
+            
+        }
+        
+        unmatchAlret.addAction(noButton)
+        unmatchAlret.addAction(yesButton)
+        present(unmatchAlret, animated: true, completion: nil)
+
+
+    }
+
 }

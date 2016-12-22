@@ -42,7 +42,7 @@ extension UIImageView {
             
             //download hit an error so lets return out
             if error != nil {
-                print(error)
+               print(error)
                 return
             }
             

@@ -38,7 +38,7 @@ class CandidateDetailViewController: UIViewController {
     
     
      func onUnmatchButtonPressed(button: UIButton) {
-        showDeleteAlret()
+        unmatchProfile()
     }
     
     
@@ -57,7 +57,7 @@ class CandidateDetailViewController: UIViewController {
         }
     }
     
-    func showDeleteAlret() {
+    func unmatchProfile() {
         let deleteAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH!", preferredStyle: .alert)
         let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
         let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
