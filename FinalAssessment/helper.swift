@@ -8,10 +8,22 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
+import Firebase
+import FirebaseDatabase
+
+
+
+
+class helper {
+    
+    
+    
+    
+}
 
 
 var imageCache = NSCache<AnyObject, AnyObject>()
-
 extension UIImageView {
     func loadImageUsingCacheWithUrlString(_ urlString: String) {
         
@@ -45,4 +57,14 @@ extension UIImageView {
         }).resume()
     }
 }
+
+extension UIViewController{
+    func warningPopUp(withTitle title : String?, withMessage message : String?){
+        let popUP = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        popUP.addAction(okButton)
+        present(popUP, animated: true, completion: nil)
+    }
+}
+
 

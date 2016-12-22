@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FIRApp.configure()
+        
+        observeNotification()
         return true
     }
 
@@ -53,6 +55,8 @@ extension AppDelegate {
             
             NotificationCenter.default.addObserver(self, selector:#selector(handleUserLoginNotification(_:)), name: Notification.Name(rawValue: "ExistLoggedInUserNotification"), object: nil)
             
+             NotificationCenter.default.addObserver(self, selector:#selector(handleUserLogoutNotification(_:)), name: Notification.Name(rawValue: "UserLogoutNotification"), object: nil)
+            
             
         }
 
@@ -64,10 +68,20 @@ extension AppDelegate {
         //this will only be called if user successfully login
         let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
         
-        let tabBarController = storyBoard.instantiateViewController(withIdentifier: "matchTabBar")
+        let tabBarController = storyBoard.instantiateViewController(withIdentifier: "NaviTabBarController")
         
         window?.rootViewController = tabBarController
     }
+    
+    func handleUserLogoutNotification(_ notification: Notification){
+        //this will call when user logout successfully
+        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        
+        let viewController = storyBoard.instantiateViewController(withIdentifier: "acessNavigationController")
+        
+        window?.rootViewController = viewController
+    }
+
     
     
 }

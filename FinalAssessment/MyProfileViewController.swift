@@ -19,7 +19,19 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var profileImage: UIImageView!
     var frDBref : FIRDatabaseReference!
     
+    var userID = User().currentUserUid()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        frDBref = FIRDatabase.database().reference()
+        
+        
+        
+        featchUser()
+        
+    }
+
     
     @IBOutlet weak var editButton: UIButton! {
         didSet {
@@ -30,6 +42,40 @@ class MyProfileViewController: UIViewController {
     func onEditButtonPressed(button: UIButton) {
          self.performSegue(withIdentifier: "myProfileSegue", sender: self)
     }
+    
+    
+    @IBOutlet weak var logoutButton: UIButton! {
+        didSet {
+            logoutButton.addTarget(self, action: #selector(onLogOutButtonPressed), for: .touchUpInside)
+        }
+    }
+    
+    func onLogOutButtonPressed(button: UIButton) {
+        let logoutAlret = UIAlertController(title: "Logout Comfirmation", message: "yer or no", preferredStyle: .alert)
+        let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
+        let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
+            do
+            {
+                try FIRAuth.auth()?.signOut()
+            }
+            catch let logoutError {
+                print(logoutError)
+            }
+            self.notifySuccessLogout()
+        }
+        
+        logoutAlret.addAction(noButton)
+        logoutAlret.addAction(yesButton)
+        present(logoutAlret, animated: true, completion: nil)
+    }
+    
+    
+    func notifySuccessLogout ()
+    {
+        let UserLogoutNotification = Notification (name: Notification.Name(rawValue: "UserLogoutNotification"), object: nil, userInfo: nil)
+        NotificationCenter.default.post(UserLogoutNotification)
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "myProfileSegue") {
@@ -42,23 +88,15 @@ class MyProfileViewController: UIViewController {
 
    
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        frDBref = FIRDatabase.database().reference()
-        
-        featchUser()
-        
-    }
     
 
     func featchUser() {
        // guard let userid = station?.stationID
          //   else{ return }
    
-        let userid = "User1"
+       // let userid = "User4"
       
-        frDBref.child("User").child(userid).observeSingleEvent(of: .value, with: { (userSnapshot) in
+        frDBref.child("User").child(userID).observeSingleEvent(of: .value, with: { (userSnapshot) in
             
             
             guard let userDictionary = userSnapshot.value as? [String : AnyObject]
@@ -66,7 +104,7 @@ class MyProfileViewController: UIViewController {
             {
                 return
             }
-            let newUser = User(dict: userDictionary)
+            let newUser = User()
            newUser.name = userDictionary["name"] as? String
            newUser.age = userDictionary["age"] as? String
             newUser.gender  = (userDictionary["gender"] as? String)!

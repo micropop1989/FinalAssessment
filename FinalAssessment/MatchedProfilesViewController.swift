@@ -18,6 +18,8 @@ class MatchedProfilesViewController: UIViewController {
     
     var frDBref : FIRDatabaseReference!
     
+    var matchUserID = User().currentUserUid()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -49,7 +51,7 @@ class MatchedProfilesViewController: UIViewController {
     
     func fetchUser() {
       
-        let matchUserID = "User1"
+       // let matchUserID = "User4"
        frDBref.child("Match").child(matchUserID).observeSingleEvent(of: .value, with: { (MatchuserSnapshot) in
       
         guard let matchUserDictionary = MatchuserSnapshot.value as? [String : AnyObject]
@@ -61,8 +63,12 @@ class MatchedProfilesViewController: UIViewController {
             
                 guard let userDictionary = userSnapshot.value as? [String : AnyObject]
                               else { return }
-            let newUser = User(dict: userDictionary)
-            newUser.name = userDictionary["name"] as! String
+            let newUser = User()
+            newUser.name = userDictionary["name"] as? String
+            newUser.profilepictureURL = userDictionary["picture"] as? String
+            newUser.age = userDictionary["age"] as? String
+            newUser.gender = userDictionary["gender"] as? String
+            newUser.email = userDictionary["email"] as? String
             self.users.append(newUser)
             
             
@@ -72,16 +78,27 @@ class MatchedProfilesViewController: UIViewController {
             })
         }
         })
+    }
     
-
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "fromMatchProfilesSegue") {
+            guard let selectedIndexPath : IndexPath = tableView.indexPathForSelectedRow else {
+                return
+            }
+            
+            let seletedProfile : User = users[selectedIndexPath.row]
+            let controller : CandidateDetailViewController = segue.destination as! CandidateDetailViewController
+            controller.user = seletedProfile
+        }
     }
 
     
 }
 
 extension MatchedProfilesViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "fromMatchProfilesSegue", sender: self)
+    }
 }
 
 extension MatchedProfilesViewController: UITableViewDataSource {
@@ -98,6 +115,14 @@ extension MatchedProfilesViewController: UITableViewDataSource {
         let user : User
         user = users[indexPath.row]
         cell.NameLabel.text = user.name
+        
+        if user.profilepictureURL == "" {
+            
+            let image = UIImage(named: "emptyPic")
+            cell.profilePicture = UIImageView(image: image)
+        } else {
+            cell.profilePicture.loadImageUsingCacheWithUrlString(user.profilepictureURL!)
+        }
         
         return cell
     }

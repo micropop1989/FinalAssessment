@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseDatabase
 
 
 class User {
@@ -20,15 +22,37 @@ class User {
     var profilepictureURL : String? = ""
     
     
-     init(dict: [String:AnyObject]){
-        
-         name = dict["name"] as? String
-        age = dict["age"] as? String
-        email = dict["email"] as? String
-        gender = dict["gender"] as? String
-        description = dict["desc"] as? String
-        
-        
+   
+
+    func signIn(uid: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(uid, forKey: "uid")
     }
+    
+    func isSignedIn() -> Bool {
+        if let _ = UserDefaults.standard.value(forKey: "uid") as? String {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func loadUid() -> String {
+        return (UserDefaults.standard.value(forKey: "uid") as? String)!
+    }
+    
+    
+    func currentUserUid() -> String {
+        guard let user = FIRAuth.auth()?.currentUser
+            else{
+                return ""
+        }
+        
+        return user.uid
+    }
+    
+   
+
+
     
 }

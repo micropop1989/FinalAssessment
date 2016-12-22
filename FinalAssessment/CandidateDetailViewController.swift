@@ -20,30 +20,53 @@ class CandidateDetailViewController: UIViewController {
     
     @IBOutlet weak var emailLabel: UILabel!
     
+    var user  : User?
     
-    @IBOutlet weak var backButton: UIButton!
-   
-    @IBOutlet weak var unmatchButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        loadProfile()
+       
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBOutlet weak var unmatchButton: UIButton! {
+        didSet {
+            unmatchButton.addTarget(self, action: #selector(onUnmatchButtonPressed), for: .touchUpInside)
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+     func onUnmatchButtonPressed(button: UIButton) {
+        showDeleteAlret()
     }
-    */
+    
+    
+    func loadProfile() {
+        nameLabel.text = user?.name
+        ageLabel.text = user?.age
+        genderLabel.text = user?.gender
+        emailLabel.text = user?.email
+        
+        if user?.profilepictureURL == "" {
+            
+            let image = UIImage(named: "emptyPic.jpg")
+            profilePicture = UIImageView(image: image)
+        } else {
+            profilePicture.loadImageUsingCacheWithUrlString((user?.profilepictureURL!)!)
+        }
+    }
+    
+    func showDeleteAlret() {
+        let deleteAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH!", preferredStyle: .alert)
+        let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
+        let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
+           
+        }
+        
+        deleteAlret.addAction(noButton)
+        deleteAlret.addAction(yesButton)
+        present(deleteAlret, animated: true, completion: nil)
+    }
 
 }

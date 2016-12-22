@@ -12,10 +12,10 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
-    @IBOutlet weak var passwordLabel: UITextField!
-    @IBOutlet weak var emailLabel: UITextField!
-   
+      
+    @IBOutlet weak var emailTextField: UITextField!
     
+    @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton! {
         didSet {
            loginButton.addTarget(self, action: #selector(onLoginButtonPressed), for: .touchUpInside)
@@ -24,21 +24,53 @@ class LoginViewController: UIViewController {
     
     
     func onLoginButtonPressed(button: UIButton) {
-        guard
-            let email = emailLabel.text,
-            let password = passwordLabel.text
+       guard
+            let email = emailTextField.text,
+            let password = passwordTextField.text
             else
         {
             
-            let title = "empty email and Password"
-            let message = "you email and password is empty"
-            let popUP = UIAlertController(title: title, message: message, preferredStyle: .alert)
-             let okButton = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-             popUP.addAction(okButton)
-               present(popUP, animated: true, completion: nil)
+           
+            self.warningPopUp(withTitle: "Error", withMessage: "email and name error")
 
             return
         }
+        
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: {(user, error) in
+            //if no error and user exist
+            if let authError = error {
+                //display the error
+                print("login error \(authError)")
+                
+                self.warningPopUp(withTitle: "Log in Error", withMessage: "Email or Password no matched")
+                
+                return
+            }
+            
+            //testing
+            print("loggged in")
+          //  helper().currentUserInfo()
+            
+            guard let firUser = user else {
+                self.warningPopUp(withTitle: "Log in Error", withMessage: "No found the User")
+                //auth success but user not found
+                // weird bug
+                return
+            }
+
+            //self.warningPopUp(withTitle: "Login Seccess", withMessage: "")
+           // let user = User()
+            //user.currentUserInfo()
+            
+            print("loggged in")
+            
+           self.notifySuccessLogin()
+        })
+    
+/*
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NaviTabBarController") as! UITabBarController
+        let navigationController = UINavigationController(rootViewController: vc)
+        self.present(navigationController, animated: true, completion: nil) */
     }
     
     
@@ -49,9 +81,22 @@ class LoginViewController: UIViewController {
         }
         else{
             print("there ald some user, sorry")
-            //notifyExistLoggedInUser()
+            notifyExistLoggedInUser()
         }
     }
+    
+    func notifySuccessLogin ()
+    {
+        let AuthSuccessNotification = Notification (name: Notification.Name(rawValue: "AuthSuccessNotification"), object: nil, userInfo: nil)
+        NotificationCenter.default.post(AuthSuccessNotification)
+    }
+    
+    func notifyExistLoggedInUser ()
+    {
+        let ExistLoggedInUserNotification = Notification (name: Notification.Name(rawValue: "ExistLoggedInUserNotification"), object: nil, userInfo: nil)
+        NotificationCenter.default.post(ExistLoggedInUserNotification)
+    }
+
 
     
     
@@ -71,8 +116,10 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        emailLabel.placeholder = "Email"
-        passwordLabel.placeholder = "Password"
+        emailTextField.placeholder = "Email"
+        passwordTextField.placeholder = "Password"
+        
+        checkLoggedInUser()
 
     }
     

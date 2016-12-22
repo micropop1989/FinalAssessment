@@ -17,8 +17,15 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var nameText: UITextField!
     @IBOutlet weak var ageText: UITextField!
-    @IBOutlet weak var genderPickerView: UIPickerView!
+    @IBOutlet weak var genderPickerView: UIPickerView! {
+        didSet {
+            genderPickerView.delegate = self
+            genderPickerView.dataSource = self
+        }
+    }
     
+    @IBOutlet weak var genderLabel: UILabel!
+    var gender = ["Male", "Female"]
    
     
     @IBOutlet weak var createAccountButton: UIButton! {
@@ -42,7 +49,7 @@ class EditProfileViewController: UIViewController {
     
    
     
-    @IBOutlet weak var backButton: UIButton!
+   
     
     var fromVC : String? = ""
    
@@ -78,10 +85,23 @@ class EditProfileViewController: UIViewController {
         ageText.placeholder = "age"
         
         
-        
-        
     }
    
-    
+}
 
+extension EditProfileViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 2
+    }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return gender[row]
+    }
+}
+
+extension EditProfileViewController: UIPickerViewDelegate {
+    
 }
