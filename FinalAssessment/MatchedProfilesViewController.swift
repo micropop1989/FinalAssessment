@@ -28,50 +28,59 @@ class MatchedProfilesViewController: UIViewController {
         tableView.dataSource = self
         frDBref = FIRDatabase.database().reference()
         
-        fetchUser()
+        //fetchUser()
         
         tableView.tableFooterView = UIView()
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 99.0
         
-        
-        let swipeleft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeleft))
-        self.view.addGestureRecognizer(swipeleft)
-        
-        
+ }
     
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        tableReload()
+    }
+    
+    func tableReload() {
+        users = []
+        fetchUser()
 
-   }
-    
-    //todo
-    func handleSwipeleft(tapGesture: UITapGestureRecognizer) {
-        
     }
     
     
-    
-    
     func fetchUser() {
-      
+       
        // let matchUserID = "User4"
        frDBref.child("Match").child(matchUserID).observeSingleEvent(of: .value, with: { (MatchuserSnapshot) in
       
+        
         guard let matchUserDictionary = MatchuserSnapshot.value as? [String : AnyObject]
                     else { return }
         
         for (userkey, value) in matchUserDictionary {
           
             self.frDBref.child("User").child(userkey).observeSingleEvent(of: .value, with: { (userSnapshot) in
+                
+                
+                guard let userID = userSnapshot.key as? String
+                    else {
+                        return
+                }
+
             
                 guard let userDictionary = userSnapshot.value as? [String : AnyObject]
                               else { return }
             let newUser = User()
+            newUser.userID = userID
             newUser.name = userDictionary["name"] as? String
             newUser.profilepictureURL = userDictionary["picture"] as? String
             newUser.age = userDictionary["age"] as? String
             newUser.gender = userDictionary["gender"] as? String
             newUser.email = userDictionary["email"] as? String
-            self.users.append(newUser)
+           
+                self.users.append(newUser)
             
             
             self.tableView.reloadData()
@@ -142,11 +151,15 @@ extension MatchedProfilesViewController: MatchedProfilesTableViewCellDelegate {
     }
     
     func unmatchProfile() {
+        var user  =  User()
+        user = users[indexToSend]
         
-        let unmatchAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH!", preferredStyle: .alert)
+        
+        let unmatchAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH! \(matchUserID) \((user.userID)!)", preferredStyle: .alert)
         let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
         let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
-            
+            self.frDBref.child("Match").child(self.matchUserID).child((user.userID)!).removeValue()
+            self.tableReload()
         }
         
         unmatchAlret.addAction(noButton)

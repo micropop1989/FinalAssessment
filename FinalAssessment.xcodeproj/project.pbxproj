@@ -68,12 +68,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		507E71661E0B4B9300BFEDAC /* function */ = {
+		507E71661E0B4B9300BFEDAC /* Helper */ = {
 			isa = PBXGroup;
 			children = (
 				507E71621E0A867F00BFEDAC /* helper.swift */,
 			);
-			name = function;
+			name = Helper;
 			sourceTree = "<group>";
 		};
 		50EF155A1E0A1B53006810E3 = {
@@ -97,7 +97,7 @@
 		50EF15651E0A1B53006810E3 /* FinalAssessment */ = {
 			isa = PBXGroup;
 			children = (
-				507E71661E0B4B9300BFEDAC /* function */,
+				507E71661E0B4B9300BFEDAC /* Helper */,
 				50EF157F1E0A225B006810E3 /* UI */,
 				50EF157E1E0A2237006810E3 /* view */,
 				50EF157D1E0A2214006810E3 /* Modal */,

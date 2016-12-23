@@ -99,12 +99,14 @@ class MyProfileViewController: UIViewController {
         frDBref.child("User").child(userID).observeSingleEvent(of: .value, with: { (userSnapshot) in
             
             
+            
             guard let userDictionary = userSnapshot.value as? [String : AnyObject]
                 else
             {
                 return
             }
             let newUser = User()
+           
            newUser.name = userDictionary["name"] as? String
            newUser.age = userDictionary["age"] as? String
             newUser.gender  = (userDictionary["gender"] as? String)!
