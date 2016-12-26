@@ -12,11 +12,32 @@ import FirebaseAuth
 
 class EditProfileViewController: UIViewController {
 
-    @IBOutlet weak var descriptionText: UITextField!
-    @IBOutlet weak var passwordText: UITextField!
-    @IBOutlet weak var emailText: UITextField!
-    @IBOutlet weak var nameText: UITextField!
-    @IBOutlet weak var ageText: UITextField!
+    @IBOutlet weak var descriptionText: UITextField! {
+        didSet {
+            descriptionText.delegate = self
+        }
+    }
+    @IBOutlet weak var passwordText: UITextField! {
+        didSet {
+              passwordText.delegate = self
+            }
+        
+    }
+    @IBOutlet weak var emailText: UITextField! {
+        didSet {
+            emailText.delegate = self
+        }
+    }
+    @IBOutlet weak var nameText: UITextField! {
+        didSet {
+            nameText.delegate = self
+        }
+    }
+    @IBOutlet weak var ageText: UITextField! {
+        didSet {
+            ageText.delegate = self
+        }
+    }
     @IBOutlet weak var genderPickerView: UIPickerView! {
         didSet {
             genderPickerView.delegate = self
@@ -65,6 +86,7 @@ class EditProfileViewController: UIViewController {
     
     
     @objc  private func tapToShowPickerView(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
         genderPickerView.isHidden = false
     }
     
@@ -127,7 +149,7 @@ class EditProfileViewController: UIViewController {
            
             self.changeProfileDetail()
             
-            self.navigationController?.popViewController(animated: true)
+            
         }
         
         updateProfileAlret.addAction(noButton)
@@ -178,7 +200,7 @@ class EditProfileViewController: UIViewController {
             }
             
             
-            self.user.userlogout()
+            self.notifySuccessLogin()
             
         }
         
@@ -196,6 +218,15 @@ class EditProfileViewController: UIViewController {
         
         let profilePictureURL = self.user.profilepictureURL
         
+       
+        
+        if email != user.email {
+            
+            changeAuthEmail(email: email)
+            
+            
+        }
+        
         let dict = user.prepareUserDictionary(name: userinfo.username, email: email, pictureURL: profilePictureURL!, desc: userinfo.description, gender: userinfo.gender, age: userinfo.age)
         
         frDBref.child("User").child(currentid).setValue(dict)
@@ -203,11 +234,41 @@ class EditProfileViewController: UIViewController {
         if let uploadedImg = self.uploadedImage {
             helper().uploadImageToStorageAndGetUrl(image: uploadedImg, userID: currentid)
         }
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
-    func changeAuth() {
+    func changeAuthEmail(email : String) {
         
+        if let userAuth = FIRAuth.auth()?.currentUser {
+            userAuth.updateEmail(email, completion: {(error) in
+               
+                if let error = error {
+                    
+                    self.warningPopUp(withTitle: "Error", withMessage: "\(error.localizedDescription)")
+                    
+                }
+                else {
+                    
+                    self.warningPopUp(withTitle: "Email Update Success", withMessage: "You success change to \(FIRAuth.auth()?.currentUser?.email)")
+               
+                
+                }
+                })
+                
+        }
+    }
+    
+    func changeAuthPassword(password : String) {
+        if let user = FIRAuth.auth()?.currentUser {
+            user.updateEmail(password, completion: {(error) in
+                if let error = error {
+                    self.warningPopUp(withTitle: "Error", withMessage: "\(error.localizedDescription)")
+                } else {
+                }
+            })
+            
+        }
+
     }
     
     
@@ -325,6 +386,12 @@ class EditProfileViewController: UIViewController {
         }
     }
     
+    func notifySuccessLogin ()
+    {
+        let AuthSuccessNotification = Notification (name: Notification.Name(rawValue: "AuthSuccessNotification"), object: nil, userInfo: nil)
+        NotificationCenter.default.post(AuthSuccessNotification)
+    }
+    
    
 }
 
@@ -364,6 +431,16 @@ extension EditProfileViewController: UIImagePickerControllerDelegate {
 }
 
 extension EditProfileViewController: UINavigationControllerDelegate {
+    
+}
+
+extension EditProfileViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
+    }
+    
     
 }
 

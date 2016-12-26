@@ -81,7 +81,7 @@ class CustomUI {
         
         boxView.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
         
-        boxView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        boxView.layer.shadowOffset = CGSize(width: 1, height: 1)
         boxView.layer.shadowOpacity = 0.8
     }
     

@@ -13,10 +13,23 @@ import FirebaseAuth
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var logInTitleLable: UILabel!
-      
-    @IBOutlet weak var emailTextField: UITextField!
+        
     
-    @IBOutlet weak var passwordTextField: UITextField!
+      
+    @IBOutlet weak var emailTextField: UITextField! {
+        didSet {
+            emailTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            emailTextField.delegate = self
+            
+        }
+    }
+    
+    @IBOutlet weak var passwordTextField: UITextField! {
+        didSet {
+            passwordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+           passwordTextField.delegate = self
+        }
+    }
     @IBOutlet weak var loginButton: UIButton! {
         didSet {
            loginButton.addTarget(self, action: #selector(onLoginButtonPressed), for: .touchUpInside)
@@ -123,6 +136,7 @@ class LoginViewController: UIViewController {
         CustomUI().setLoginLabel(lable: logInTitleLable)
         CustomUI().setButtonDesign(button: loginButton, color: UIColor.orange)
         CustomUI().setButtonDesign(button: signUpButton, color: UIColor.orange)
+        loginButton.isEnabled = false
         
      
         
@@ -146,8 +160,19 @@ class LoginViewController: UIViewController {
         }
     }
     
+    func textFieldDidChange(textField: UITextField) {
+        if emailTextField.text != "" && passwordTextField.text != "" {
+            loginButton.isEnabled = true
+        } else {
+            loginButton.isEnabled = false
+        }
+    }
     
-    
-    
+}
 
+extension LoginViewController : UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         textField.resignFirstResponder()
+        return true
+    }
 }

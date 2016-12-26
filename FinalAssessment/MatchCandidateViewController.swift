@@ -164,7 +164,8 @@ class MatchCandidateViewController: UIViewController {
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Filter age or gender"
-        matchCandidateTableView.tableHeaderView = searchController.searchBar
+         matchCandidateTableView.tableHeaderView = searchController.searchBar
+        
        
     }
 
