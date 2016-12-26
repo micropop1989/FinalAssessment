@@ -19,15 +19,26 @@ class MatchCandidateViewController: UIViewController {
     
     var currentUserID = User().currentUserUid()
     
+    var container  = UIView()
+    var loadingView = UIView()
+    var activityIndicator = UIActivityIndicatorView()
+
+    
     var indexToSend = -1
-    var editRow = false
+   // var editRow = false
+    
+   // var filterOn = false
+    
+    @IBOutlet weak var filterView: UIView!
+    let searchController = UISearchController(searchResultsController: nil)
+    
     @IBOutlet weak var filterButton: UIButton! {
         didSet {
         filterButton.addTarget(self, action: #selector(onFilterButtonPressed), for: .touchUpInside)
         }
     }
    
-    @IBOutlet weak var filterLabel: UITextField!
+  //  @IBOutlet weak var filtertext: UITextField!
     @IBOutlet weak var matchCandidateTableView: UITableView! {
         didSet {
             matchCandidateTableView.delegate = self
@@ -42,8 +53,10 @@ class MatchCandidateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-               frDBref = FIRDatabase.database().reference()
-    
+        CustomUI().showActivityIndicatory(uiView: self.view, container: container, loadingView: loadingView, activityIndicator: activityIndicator)
+        frDBref = FIRDatabase.database().reference()
+        self.title = "Match Candidate"
+        initSearchBar()
         fetchData()
         
     }
@@ -61,27 +74,30 @@ class MatchCandidateViewController: UIViewController {
     
     
     func onFilterButtonPressed(button: UIButton) {
-        filterAgeOrGender(filterString: filterLabel.text!)
+       // filterAgeOrGender(filterString: filtertext.text!)
     }
     
     func filterAgeOrGender(filterString : String) {
         filterUsers = []
         
         if filterString == ""{
-            filterUsers = users
+        filterUsers = users
         }
         else{
             filterUsers = users.filter ({ user in
                 
-                return (user.gender!.lowercased().contains(filterString.lowercased())) || (user.age)!.contains(filterString)
+                return (user.gender!.lowercased() == filterString.lowercased()) || (user.age)! == filterString
                 
             })
-        }
-        
+       }
+    //    filterOn = true
         self.matchCandidateTableView.reloadData()
+        
 
     }
 
+    
+    
     
     func fetchUser() {
         users = []
@@ -118,13 +134,19 @@ class MatchCandidateViewController: UIViewController {
         frDBref.child("Match").child(currentUserID).observeSingleEvent(of: .value, with: { (matchSnapshot) in
             
             guard let matchDictionary = matchSnapshot.value as? [String : AnyObject]
-                else { return }
+                else {
+               self.matchCandidateTableView.reloadData()
+               CustomUI().dismissActivityIndicatory(container: self.container, activityIndicator:  self.activityIndicator)
+               return
+            }
             
             for (key, value) in matchDictionary {
               print(key)
               self.matchIDs.append(key)
             }
             self.matchCandidateTableView.reloadData()
+            CustomUI().dismissActivityIndicatory(container: self.container, activityIndicator:  self.activityIndicator)
+
             //self.matchIDs.append(matchID)
             
         })
@@ -133,15 +155,31 @@ class MatchCandidateViewController: UIViewController {
         
             
     }
+    
+    func initSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.definesPresentationContext = true
+        definesPresentationContext = true
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Filter age or gender"
+        matchCandidateTableView.tableHeaderView = searchController.searchBar
+       
+    }
 
 }
 
 extension MatchCandidateViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if filterButton.isTouchInside {
-            return filterUsers.count
+     //  if filtertext.isEditing == true && filtertext.text == "" {
+      //  if filterOn {
+        if searchController.isActive && searchController.searchBar.text != "" {
+        return filterUsers.count
+        
         } else {
-        return users.count    }
+        return users.count
+        }
     
     }
     
@@ -158,9 +196,10 @@ extension MatchCandidateViewController: UITableViewDataSource {
         cell.delegate = self
         var user = User()
         
-       
-        if filterButton.isTouchInside {
+     
+        if searchController.isActive && searchController.searchBar.text != "" {
             user = filterUsers[indexPath.row]
+         
         } else {
             user = users[indexPath.row]
         }
@@ -181,8 +220,8 @@ extension MatchCandidateViewController: UITableViewDataSource {
         
           guard  let pictureURL = user.profilepictureURL else
           {
-            let image = UIImage(named: "emptyPic")
-            cell.profileImage = UIImageView(image: image)
+            let img = UIImage(named: "emptyPic")
+            cell.profileImage = UIImageView(image: img)
             return cell }
         
         
@@ -191,8 +230,8 @@ extension MatchCandidateViewController: UITableViewDataSource {
                 cell.profileImage.loadImageUsingCacheWithUrlString(pictureURL)
              
             } else {
-                let image = UIImage(named: "emptyPic")
-                cell.profileImage = UIImageView(image: image)
+                let img = UIImage(named: "emptyPic")
+                cell.profileImage = UIImageView(image: img)
             }
         
 
@@ -200,9 +239,10 @@ extension MatchCandidateViewController: UITableViewDataSource {
             
         }
 
-        
+    }
+
     
-}
+
 
 extension MatchCandidateViewController: UITableViewDelegate {
     
@@ -216,23 +256,23 @@ extension MatchCandidateViewController: MatchCandidateTableViewCellDelegate {
         }
         indexToSend = indexPath.row
         
-        matchProfile()
+        likeProfile()
     }
     
     func matchCandidateTableviewCellHandleUnMatch(cell: MatchCandidateTableViewCell) {
       
-guard let indexPath = matchCandidateTableView.indexPath(for: cell)
+        guard let indexPath = matchCandidateTableView.indexPath(for: cell)
             else{
                 return
         }
         indexToSend = indexPath.row
-        unmatchProfile()
+        dislikeProfile()
         
         
 
     }
 
-    func matchProfile() {
+    func likeProfile() {
         var user  =  User()
         user = users[indexToSend]
         
@@ -251,12 +291,12 @@ guard let indexPath = matchCandidateTableView.indexPath(for: cell)
             }
         }
     
-    func unmatchProfile() {
+    func dislikeProfile() {
         var user  =  User()
         user = users[indexToSend]
         
          if matchIDs.contains(user.userID!) {
-           self.warningPopUp(withTitle: "Info!!!", withMessage: "You Can't liked with \(user.name!)")
+           self.warningPopUp(withTitle: "Info!!!", withMessage: "Due to you already liked with \(user.name!). So, you Can't dislike with \(user.name!)")
          } else  {
         self.warningPopUp(withTitle: "Dislike!!!", withMessage: "You diliked \(user.name!)")
         //user = users[indexToSend]
@@ -268,4 +308,20 @@ guard let indexPath = matchCandidateTableView.indexPath(for: cell)
         
     }
 
+}
+
+extension MatchCandidateViewController: UISearchBarDelegate{
+    func searchBar(_ searchBar: UISearchBar)
+    {
+        filterAgeOrGender(filterString: searchBar.text!)
+    }
+    
+    
+}
+
+extension MatchCandidateViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        filterAgeOrGender(filterString: searchController.searchBar.text!)
+    }
 }

@@ -13,12 +13,13 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var NameLabel: UILabel!
     @IBOutlet weak var profilePicture: UIImageView!
     
+    @IBOutlet weak var boxView: UIView!
     
     var delegate : MatchedProfilesTableViewCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-       
+       CustomUI().createBoxView(boxView: boxView, contentView: contentView)
         
         let swipeleft = UISwipeGestureRecognizer(target: self, action: #selector(self.handleUnMatchGesture))
         swipeleft.direction = UISwipeGestureRecognizerDirection.left

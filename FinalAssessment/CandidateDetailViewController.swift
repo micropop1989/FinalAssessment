@@ -14,14 +14,13 @@ class CandidateDetailViewController: UIViewController {
 
     @IBOutlet weak var profilePicture: UIImageView!
     
-    @IBOutlet weak var nameLabel: UILabel!
-    
-    @IBOutlet weak var ageLabel: UILabel!
+       @IBOutlet weak var ageLabel: UILabel!
     
     @IBOutlet weak var genderLabel: UILabel!
     
     @IBOutlet weak var emailLabel: UILabel!
     
+    @IBOutlet weak var descriptionLabel: UILabel!
     var user  : User?
     var currentUserID = User().currentUserUid()
     
@@ -32,6 +31,8 @@ class CandidateDetailViewController: UIViewController {
         frDBref = FIRDatabase.database().reference()
         
         loadProfile()
+        
+        self.title = user?.name
        
     }
 
@@ -39,6 +40,7 @@ class CandidateDetailViewController: UIViewController {
     @IBOutlet weak var unmatchButton: UIButton! {
         didSet {
             unmatchButton.addTarget(self, action: #selector(onUnmatchButtonPressed), for: .touchUpInside)
+             CustomUI().setButtonDesign(button: unmatchButton , color: UIColor.dodgerBlue)
         }
     }
     
@@ -49,10 +51,11 @@ class CandidateDetailViewController: UIViewController {
     
     
     func loadProfile() {
-        nameLabel.text = user?.name
+       // nameLabel.text = user?.name
         ageLabel.text = user?.age
         genderLabel.text = user?.gender
         emailLabel.text = user?.email
+        descriptionLabel.text = user?.description
         
         if user?.profilepictureURL == "" {
             
@@ -64,7 +67,7 @@ class CandidateDetailViewController: UIViewController {
     }
     
     func unmatchProfile() {
-        let deleteAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH! \((user?.userID!)!)", preferredStyle: .alert)
+        let deleteAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH!", preferredStyle: .alert)
         let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
         let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
            self.frDBref.child("Match").child(self.currentUserID).child((self.user?.userID)!).removeValue()

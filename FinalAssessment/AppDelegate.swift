@@ -19,6 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
         
         observeNotification()
+        
+        UITabBar.appearance().barTintColor = UIColor.dodgerBlue
+        UITabBar.appearance().tintColor = UIColor.white
+        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.black], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: .selected)
+        
+        UINavigationBar.appearance().barTintColor = UIColor.dodgerBlue
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
         return true
     }
 

@@ -15,11 +15,12 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
-    @IBOutlet weak var nameLabel: UILabel!
+   
     @IBOutlet weak var profileImage: UIImageView!
     var frDBref : FIRDatabaseReference!
     
     var userID = User().currentUserUid()
+    var user = User()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,12 @@ class MyProfileViewController: UIViewController {
         
         
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         featchUser()
+        
         
     }
 
@@ -36,32 +42,28 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var editButton: UIButton! {
         didSet {
             editButton.addTarget(self, action: #selector(onEditButtonPressed), for: .touchUpInside)
+            CustomUI().setButtonDesign(button: editButton, color: UIColor.dodgerBlue)
         }
     }
     
     func onEditButtonPressed(button: UIButton) {
          self.performSegue(withIdentifier: "myProfileSegue", sender: self)
+       
     }
     
     
     @IBOutlet weak var logoutButton: UIButton! {
         didSet {
             logoutButton.addTarget(self, action: #selector(onLogOutButtonPressed), for: .touchUpInside)
+             CustomUI().setButtonDesign(button: logoutButton , color: UIColor.dodgerBlue)
         }
     }
     
     func onLogOutButtonPressed(button: UIButton) {
-        let logoutAlret = UIAlertController(title: "Logout Comfirmation", message: "yer or no", preferredStyle: .alert)
+        let logoutAlret = UIAlertController(title: "Logout Comfirmation", message: "Are you sure you want LOG OUT!", preferredStyle: .alert)
         let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
         let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
-            do
-            {
-                try FIRAuth.auth()?.signOut()
-            }
-            catch let logoutError {
-                print(logoutError)
-            }
-            self.notifySuccessLogout()
+           self.user.userlogout()
         }
         
         logoutAlret.addAction(noButton)
@@ -70,17 +72,13 @@ class MyProfileViewController: UIViewController {
     }
     
     
-    func notifySuccessLogout ()
-    {
-        let UserLogoutNotification = Notification (name: Notification.Name(rawValue: "UserLogoutNotification"), object: nil, userInfo: nil)
-        NotificationCenter.default.post(UserLogoutNotification)
-    }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "myProfileSegue") {
             let destination = segue.destination as! EditProfileViewController
             destination.fromVC = "My Profile"
+            destination.user = user
             
             
         }
@@ -105,31 +103,37 @@ class MyProfileViewController: UIViewController {
             {
                 return
             }
-            let newUser = User()
+            
+           self.user.userID = self.userID
+           self.user.name = userDictionary["name"] as? String
+           self.user.age = userDictionary["age"] as? String
+            self.user.gender  = userDictionary["gender"] as? String
+            self.user.email = userDictionary["email"] as? String
+            self.user.profilepictureURL = userDictionary["picture"] as? String
+            self.user.description = userDictionary["desc"] as? String
+            
+            
+           // self.user = newUser
+            self.fillInDetail()
            
-           newUser.name = userDictionary["name"] as? String
-           newUser.age = userDictionary["age"] as? String
-            newUser.gender  = (userDictionary["gender"] as? String)!
-            newUser.email = (userDictionary["email"] as? String)!
-            newUser.profilepictureURL = userDictionary["picture"] as? String
-            
-            
-            self.nameLabel.text = newUser.name
-            self.ageLabel.text = newUser.age
-            self.genderLabel.text = newUser.gender
-            self.emailLabel.text = newUser.email
-            if newUser.profilepictureURL == "" {
-                
-                let image = UIImage(named: "emptyPic.jpg")
-                self.profileImage = UIImageView(image: image)
-            } else {
-                self.profileImage.loadImageUsingCacheWithUrlString(newUser.profilepictureURL!)
-            }
-            
         })
-        
-            
+    }
+ 
+    
+    func fillInDetail() {
+    //nameLabel.text = user.name
+    ageLabel.text = user.age
+    genderLabel.text = user.gender
+    emailLabel.text = user.email
+    title = user.name
+    if user.profilepictureURL == "" {
+    
+    let image = UIImage(named: "emptyPic.jpg")
+    self.profileImage = UIImageView(image: image)
+    } else {
 
+    self.profileImage.loadImageUsingCacheWithUrlString(user.profilepictureURL!)
+    }
     }
     
 

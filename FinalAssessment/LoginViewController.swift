@@ -12,6 +12,7 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var logInTitleLable: UILabel!
       
     @IBOutlet weak var emailTextField: UITextField!
     
@@ -113,13 +114,26 @@ class LoginViewController: UIViewController {
 
     }
     
+    
+    func initLoginView() {
+        emailTextField.placeholder = "Email"
+        passwordTextField.placeholder = "Password"
+        CustomUI().setGradientBackgroundColor(view: self.view, firstColor: UIColor.midNightBlue, secondColor: UIColor.dodgerBlue)
+        
+        CustomUI().setLoginLabel(lable: logInTitleLable)
+        CustomUI().setButtonDesign(button: loginButton, color: UIColor.orange)
+        CustomUI().setButtonDesign(button: signUpButton, color: UIColor.orange)
+        
+     
+        
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        emailTextField.placeholder = "Email"
-        passwordTextField.placeholder = "Password"
-        
         checkLoggedInUser()
+         initLoginView()
 
     }
     
@@ -131,6 +145,9 @@ class LoginViewController: UIViewController {
             
         }
     }
+    
+    
+    
     
 
 }

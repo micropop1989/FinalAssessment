@@ -22,11 +22,19 @@ class MatchedProfilesViewController: UIViewController {
     
     var indexToSend = -1
     
+    var container  = UIView()
+    var loadingView = UIView()
+    var activityIndicator = UIActivityIndicatorView()
+    
+    @IBOutlet weak var boxView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        CustomUI().showActivityIndicatory(uiView: self.view, container: container, loadingView: loadingView, activityIndicator: activityIndicator)
         tableView.delegate = self
         tableView.dataSource = self
         frDBref = FIRDatabase.database().reference()
+        self.title = "Matched Profile"
         
         //fetchUser()
         
@@ -79,17 +87,19 @@ class MatchedProfilesViewController: UIViewController {
             newUser.age = userDictionary["age"] as? String
             newUser.gender = userDictionary["gender"] as? String
             newUser.email = userDictionary["email"] as? String
+            newUser.description = userDictionary["desc"] as? String
            
                 self.users.append(newUser)
             
             
             self.tableView.reloadData()
-            
+            CustomUI().dismissActivityIndicatory(container: self.container, activityIndicator:  self.activityIndicator)
             
             })
         }
         })
     }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "fromMatchProfilesSegue") {
@@ -100,6 +110,7 @@ class MatchedProfilesViewController: UIViewController {
             let seletedProfile : User = users[selectedIndexPath.row]
             let controller : CandidateDetailViewController = segue.destination as! CandidateDetailViewController
             controller.user = seletedProfile
+            
         }
     }
 
@@ -155,7 +166,7 @@ extension MatchedProfilesViewController: MatchedProfilesTableViewCellDelegate {
         user = users[indexToSend]
         
         
-        let unmatchAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH! \(matchUserID) \((user.userID)!)", preferredStyle: .alert)
+        let unmatchAlret = UIAlertController(title: "Unmatch Cofirmation", message: "Are you sure you want UNMATCH!", preferredStyle: .alert)
         let noButton = UIAlertAction(title: "NO", style: .cancel, handler: nil)
         let yesButton = UIAlertAction(title: "YES", style: .default) { (action) in
             self.frDBref.child("Match").child(self.matchUserID).child((user.userID)!).removeValue()
